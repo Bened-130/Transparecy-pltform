@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: iebc-election-sa
+  namespace: iebc-election
+  annotations:
+    kubernetes.io/description: Service account for IEBC Election Transparency Platform
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: iebc-election-role
+  namespace: iebc-election
+rules:
+- apiGroups: [""]
+  resources: ["configmaps", "secrets"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: iebc-election-rolebinding
+  namespace: iebc-election
+subjects:
+- kind: ServiceAccount
+  name: iebc-election-sa
+  namespace: iebc-election
+roleRef:
+  kind: Role
+  name: iebc-election-role
+  apiGroup: rbac.authorization.k8s.io
