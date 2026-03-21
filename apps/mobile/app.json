@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "IEBC Election Transparency",
+    "slug": "iebc-election-transparency",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1a5f2a"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.iebc.transparency"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#1a5f2a"
+      },
+      "package": "com.iebc.transparency"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
