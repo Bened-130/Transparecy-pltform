@@ -1,0 +1,78 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: iebc_admin
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: election_transparency
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/migrations:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    
+  ipfs:
+    image: ipfs/kubo:latest
+    ports:
+      - "4001:4001"
+      - "5001:5001"
+      - "8080:8080"
+    volumes:
+      - ipfs_data:/data/ipfs
+    
+  api-gateway:
+    build: ./services/api-gateway
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://iebc_admin:${DB_PASSWORD}@postgres:5432/election_transparency
+      - REDIS_URL=redis://redis:6379
+      - IPFS_URL=http://ipfs:5001
+    depends_on:
+      - postgres
+      - redis
+      - ipfs
+    
+  ai-processor:
+    build: ./services/ai-processor
+    ports:
+      - "3002:3002"
+    environment:
+      - AWS_REGION=${AWS_REGION}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+    volumes:
+      - ai_models:/app/models
+    
+  sms-service:
+    build: ./services/sms-service
+    ports:
+      - "3003:3003"
+    environment:
+      - SAFARICOM_CONSUMER_KEY=${SAFARICOM_CONSUMER_KEY}
+      - SAFARICOM_CONSUMER_SECRET=${SAFARICOM_CONSUMER_SECRET}
+      - SAFARICOM_PASSKEY=${SAFARICOM_PASSKEY}
+      - SAFARICOM_SHORTCODE=${SAFARICOM_SHORTCODE}
+    
+  web:
+    build: ./apps/web
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://api-gateway:3001
+      - NEXT_PUBLIC_WS_URL=ws://api-gateway:3001
+
+volumes:
+  postgres_data:
+  redis_data:
+  ipfs_data:
+  ai_models:
