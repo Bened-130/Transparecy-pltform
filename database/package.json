@@ -1,0 +1,11 @@
+{
+  "name": "@iebc/database",
+  "version": "1.0.0",
+  "scripts": {
+    "migrate": "psql $DATABASE_URL -f migrations/001_initial_schema.sql",
+    "seed": "psql $DATABASE_URL -f seeds/sample_data.sql",
+    "reset": "psql $DATABASE_URL -c 'DROP SCHEMA public CASCADE; CREATE SCHEMA public;' && npm run migrate && npm run seed",
+    "backup": "pg_dump $DATABASE_URL > backup_$(date +%Y%m%d_%H%M%S).sql",
+    "cleanup": "psql $DATABASE_URL -c \"SELECT cleanup_expired_otps();\""
+  }
+}
