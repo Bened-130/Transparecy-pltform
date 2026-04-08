@@ -1,0 +1,19 @@
+{
+  "name": "election-transparency-platform",
+  "private": true,
+  "workspaces": ["apps/*", "packages/*", "services/*"],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "db:migrate": "cd database && npm run migrate",
+    "db:seed": "cd database && npm run seed",
+    "docker:up": "docker-compose up -d",
+    "k8s:deploy": "kubectl apply -f infrastructure/k8s/"
+  },
+  "devDependencies": {
+    "turbo": "^1.10.0",
+    "typescript": "^5.2.0"
+  }
+}
