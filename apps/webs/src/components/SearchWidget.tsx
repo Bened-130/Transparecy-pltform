@@ -5,10 +5,10 @@ interface SearchWidgetProps {
   placeholder?: string;
 }
 
-export const SearchWidget: React.FC<SearchWidgetProps> = ({
+export default function SearchWidget({
   onSearch,
   placeholder = 'Search by polling station ID, upload ID...',
-}) => {
+}: SearchWidgetProps) {
   const [query, setQuery] = useState('');
 
   const handleSearch = (e: React.FormEvent) => {
@@ -78,4 +78,4 @@ export const SearchWidget: React.FC<SearchWidgetProps> = ({
       </div>
     </div>
   );
-};
+}

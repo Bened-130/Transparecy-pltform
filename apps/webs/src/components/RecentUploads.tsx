@@ -15,7 +15,7 @@ interface RecentUploadsProps {
   loading?: boolean;
 }
 
-export const RecentUploads: React.FC<RecentUploadsProps> = ({ uploads, loading = false }) => {
+export default function RecentUploads({ uploads, loading = false }: RecentUploadsProps) {
   const getStatusBadge = (status: string) => {
     const statuses: Record<string, { bg: string; text: string; icon: string }> = {
       verified: { bg: 'bg-green-100', text: 'text-green-800', icon: '✓' },
@@ -88,4 +88,4 @@ export const RecentUploads: React.FC<RecentUploadsProps> = ({ uploads, loading =
       )}
     </div>
   );
-};
+}

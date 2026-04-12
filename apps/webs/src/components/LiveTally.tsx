@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   BarChart,
   Bar,
@@ -13,33 +13,21 @@ import {
   Cell,
 } from 'recharts';
 
-interface Candidate {
-  id: string;
-  name: string;
-  party: string;
-  color: string;
-  votes: number;
-}
+export default function LiveTally() {
+  // Mock data for demonstration
+  const candidates = [
+    { name: 'Candidate A', party: 'Party 1', votes: 45230, color: '#8884d8' },
+    { name: 'Candidate B', party: 'Party 2', votes: 38750, color: '#82ca9d' },
+    { name: 'Candidate C', party: 'Party 3', votes: 28900, color: '#ffc658' },
+    { name: 'Candidate D', party: 'Party 4', votes: 19800, color: '#ff7c7c' },
+  ];
 
-interface LiveTallyProps {
-  candidates: Candidate[];
-  totalVotes: number;
-  lastUpdated: string;
-}
-
-export const LiveTally: React.FC<LiveTallyProps> = ({ candidates, totalVotes, lastUpdated }) => {
-  const [chartData, setChartData] = useState<
-    Array<{ name: string; votes: number; percentage: number }>
-  >([]);
-
-  useEffect(() => {
-    const data = candidates.map((candidate) => ({
-      name: candidate.name,
-      votes: candidate.votes,
-      percentage: totalVotes > 0 ? (candidate.votes / totalVotes) * 100 : 0,
-    }));
-    setChartData(data);
-  }, [candidates, totalVotes]);
+  const totalVotes = candidates.reduce((sum, c) => sum + c.votes, 0);
+  const chartData = candidates.map((candidate) => ({
+    name: candidate.name,
+    votes: candidate.votes,
+    percentage: ((candidate.votes / totalVotes) * 100).toFixed(1),
+  }));
 
   const COLORS = candidates.map((c) => c.color);
 
@@ -47,7 +35,59 @@ export const LiveTally: React.FC<LiveTallyProps> = ({ candidates, totalVotes, la
     <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-800">Live Vote Tally</h2>
-        <p className="text-gray-500 text-sm">Last updated: {new Date(lastUpdated).toLocaleTimeString()}</p>
+        <div className="flex items-center text-green-600">
+          <div className="w-2 h-2 bg-green-600 rounded-full mr-2 animate-pulse"></div>
+          <span className="text-sm font-medium">LIVE</span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Bar Chart */}
+        <div className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={chartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip formatter={(value) => [value.toLocaleString(), 'Votes']} />
+              <Legend />
+              <Bar dataKey="votes" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        {/* Pie Chart */}
+        <div className="h-80">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={chartData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                label={({ name, percentage }) => `${name}: ${percentage}%`}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="votes"
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      <div className="mt-6 text-center">
+        <p className="text-lg font-semibold text-gray-700">
+          Total Votes Cast: {totalVotes.toLocaleString()}
+        </p>
+      </div>
+    </div>
+  );
+}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
