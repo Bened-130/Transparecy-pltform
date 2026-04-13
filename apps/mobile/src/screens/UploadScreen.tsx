@@ -10,14 +10,25 @@ import {
   FlatList,
   Image,
 } from 'react-native';
-import { CameraView, useCameraPermissions } from 'expo-camera';
+import { Camera, useCameraPermissions } from 'expo-camera';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import * as FileSystem from 'expo-file-system';
 import { api } from '../services/api';
 
-export const UploadScreen = ({ route, navigation }) => {
+interface UploadScreenProps {
+  route: {
+    params: {
+      electionId: string;
+      pollingStationId: string;
+      token: string;
+    };
+  };
+  navigation: any;
+}
+
+export const UploadScreen = ({ route, navigation }: UploadScreenProps) => {
   const { electionId, pollingStationId, token } = route.params;
-  const cameraRef = useRef(null);
+  const cameraRef = useRef<Camera | null>(null);
 
   const [permission, requestPermission] = useCameraPermissions();
   const [photos, setPhotos] = useState<string[]>([]);
@@ -63,7 +74,7 @@ export const UploadScreen = ({ route, navigation }) => {
   };
 
   const removePhoto = (index: number) => {
-    setPhotos(photos.filter((_, i) => i !== index));
+    setPhotos(photos.filter((_photo: string, i: number) => i !== index));
   };
 
   const submitUpload = async () => {
@@ -75,7 +86,7 @@ export const UploadScreen = ({ route, navigation }) => {
     setUploading(true);
     try {
       // Convert images to base64
-      const imagePromises = photos.map(async (photoUri, index) => {
+      const imagePromises = photos.map(async (photoUri: string, index: number) => {
         const base64 = await FileSystem.readAsStringAsync(photoUri, {
           encoding: FileSystem.EncodingType.Base64,
         });
@@ -127,7 +138,7 @@ export const UploadScreen = ({ route, navigation }) => {
   if (cameraMode && photos.length < 10) {
     return (
       <View style={styles.container}>
-        <CameraView style={styles.camera} ref={cameraRef} />
+        <Camera style={styles.camera} ref={cameraRef} />
         <View style={styles.cameraControls}>
           <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
             <Text style={styles.captureButtonText}>📸 Capture</Text>
@@ -150,7 +161,7 @@ export const UploadScreen = ({ route, navigation }) => {
       <FlatList
         data={photos}
         scrollEnabled={false}
-        renderItem={({ item, index }) => (
+        renderItem={({ item, index }: { item: string; index: number }) => (
           <View style={styles.photoContainer}>
             <Image source={{ uri: item }} style={styles.photo} />
             <TouchableOpacity
@@ -161,7 +172,7 @@ export const UploadScreen = ({ route, navigation }) => {
             </TouchableOpacity>
           </View>
         )}
-        keyExtractor={(_, i) => i.toString()}
+        keyExtractor={(_item: string, i: number) => i.toString()}
       />
 
       <View style={styles.actions}>
