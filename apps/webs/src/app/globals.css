@@ -1,0 +1,498 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   Glassmorphism Design System
+   ============================================ */
+
+/* Base Colors */
+:root {
+  /* Primary palette */
+  --primary: #007AFF;
+  --primary-dark: #0051D5;
+  --primary-light: #5AC8FA;
+
+  /* Secondary palette */
+  --secondary: #34C759;
+  --secondary-dark: #00B741;
+  --secondary-light: #5ACF68;
+
+  /* Accent colors */
+  --accent-red: #FF3B30;
+  --accent-orange: #FF9500;
+  --accent-yellow: #FFCC00;
+  --accent-pink: #FF2D55;
+
+  /* Neutral palette */
+  --white: #FFFFFF;
+  --gray-50: #F9FAFB;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
+  --gray-900: #111827;
+
+  /* Glassmorphism specific */
+  --glass-blur: 10px;
+  --glass-blur-sm: 5px;
+  --glass-blur-lg: 20px;
+  --glass-opacity: 0.8;
+  --glass-opacity-light: 0.6;
+  --glass-border-opacity: 0.3;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #0F1419;
+    --gray-50: #1A1F2E;
+    --gray-100: #252D3D;
+    --gray-200: #303847;
+    --gray-300: #3A424D;
+    --gray-400: #6B7280;
+    --gray-500: #8B8B8B;
+    --gray-600: #A0A0A0;
+    --gray-700: #B8B8B8;
+    --gray-800: #D4D4D8;
+    --gray-900: #ECECF1;
+  }
+}
+
+/* ============================================
+   Glassmorphism Components
+   ============================================ */
+
+/* Glass surface - basic frosted glass effect */
+.glass {
+  @apply backdrop-blur-md bg-white/30 border border-white/40 shadow-xl;
+}
+
+/* Glass surface - subtle version */
+.glass-sm {
+  @apply backdrop-blur-sm bg-white/20 border border-white/30 shadow-lg;
+}
+
+/* Glass surface - strong version */
+.glass-lg {
+  @apply backdrop-blur-lg bg-white/25 border border-white/50 shadow-2xl;
+}
+
+/* Glass surface with inverted colors (dark mode) */
+@media (prefers-color-scheme: dark) {
+  .glass {
+    @apply bg-gray-900/30 border-gray-700/40;
+  }
+
+  .glass-sm {
+    @apply bg-gray-900/20 border-gray-700/30;
+  }
+
+  .glass-lg {
+    @apply bg-gray-900/25 border-gray-700/50;
+  }
+}
+
+/* ============================================
+   Cards and Containers
+   ============================================ */
+
+.card {
+  @apply glass p-6 rounded-2xl transition-all duration-300 hover:shadow-2xl hover:bg-white/40;
+}
+
+.card:hover {
+  @apply backdrop-blur-lg;
+}
+
+.card-sm {
+  @apply glass-sm p-4 rounded-xl;
+}
+
+.card-lg {
+  @apply glass-lg p-8 rounded-3xl;
+}
+
+/* Interactive card with hover effect */
+.card-interactive {
+  @apply card cursor-pointer hover:scale-105 hover:bg-white/50;
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+
+.btn-glass {
+  @apply glass px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:bg-white/40 active:scale-95;
+}
+
+.btn-glass-primary {
+  @apply btn-glass bg-gradient-to-r from-blue-400/40 to-blue-500/40 text-primary border-blue-400/50 hover:border-blue-300;
+}
+
+.btn-glass-success {
+  @apply btn-glass bg-gradient-to-r from-green-400/40 to-green-500/40 text-secondary border-green-400/50 hover:border-green-300;
+}
+
+.btn-glass-danger {
+  @apply btn-glass bg-gradient-to-r from-red-400/40 to-red-500/40 text-accent-red border-red-400/50 hover:border-red-300;
+}
+
+/* Subtle button */
+.btn-glass-subtle {
+  @apply glass-sm px-4 py-2 rounded-lg text-sm font-medium;
+}
+
+/* ============================================
+   Navigation and Header
+   ============================================ */
+
+.navbar {
+  @apply glass sticky top-0 z-40 backdrop-blur-xl bg-white/20 border-b border-white/40;
+}
+
+.navbar-item {
+  @apply px-4 py-2 rounded-lg transition-all duration-300 hover:bg-white/30 active:scale-95;
+}
+
+.navbar-item-active {
+  @apply bg-blue-400/40 text-primary border border-blue-400/50;
+}
+
+/* ============================================
+   Input Fields and Forms
+   ============================================ */
+
+.input-glass {
+  @apply glass backdrop-blur-md bg-white/20 border border-white/40 px-4 py-3 rounded-lg text-gray-900 placeholder-gray-500 transition-all duration-300;
+}
+
+.input-glass:focus {
+  @apply outline-none bg-white/30 border-blue-400/60 ring-2 ring-blue-400/20;
+}
+
+.input-glass::placeholder {
+  @apply text-gray-500 opacity-70;
+}
+
+/* Dark mode inputs */
+@media (prefers-color-scheme: dark) {
+  .input-glass {
+    @apply bg-gray-900/20 border-gray-700/40 text-gray-100 placeholder-gray-400;
+  }
+
+  .input-glass:focus {
+    @apply bg-gray-900/30 border-blue-400/60;
+  }
+}
+
+.textarea-glass {
+  @apply input-glass resize-none;
+}
+
+.select-glass {
+  @apply input-glass appearance-none cursor-pointer;
+}
+
+/* ============================================
+   Badges and Tags
+   ============================================ */
+
+.badge {
+  @apply glass-sm px-3 py-1 rounded-full text-sm font-semibold inline-block;
+}
+
+.badge-primary {
+  @apply badge bg-blue-400/30 text-primary border-blue-400/40;
+}
+
+.badge-success {
+  @apply badge bg-green-400/30 text-secondary border-green-400/40;
+}
+
+.badge-warning {
+  @apply badge bg-yellow-400/30 text-yellow-700 border-yellow-400/40;
+}
+
+.badge-danger {
+  @apply badge bg-red-400/30 text-accent-red border-red-400/40;
+}
+
+/* ============================================
+   Modals and Overlays
+   ============================================ */
+
+.modal-backdrop {
+  @apply fixed inset-0 bg-black/30 backdrop-blur-sm z-40 transition-opacity duration-300;
+}
+
+.modal {
+  @apply glass-lg rounded-3xl shadow-2xl max-w-lg w-full mx-auto;
+}
+
+/* ============================================
+   Charts and Graphs
+   ============================================ */
+
+.chart-container {
+  @apply glass p-6 rounded-2xl;
+}
+
+.chart-title {
+  @apply text-xl font-bold text-gray-900 mb-4;
+}
+
+@media (prefers-color-scheme: dark) {
+  .chart-title {
+    @apply text-gray-100;
+  }
+}
+
+/* ============================================
+   Loading States
+   ============================================ */
+
+.skeleton {
+  @apply bg-gradient-to-r from-white/20 via-white/30 to-white/20 rounded-lg animate-pulse;
+}
+
+@media (prefers-color-scheme: dark) {
+  .skeleton {
+    @apply from-gray-900/20 via-gray-900/30 to-gray-900/20;
+  }
+}
+
+/* ============================================
+   Gradients
+   ============================================ */
+
+.gradient-primary {
+  @apply bg-gradient-to-r from-primary to-primary-light;
+}
+
+.gradient-success {
+  @apply bg-gradient-to-r from-secondary to-secondary-light;
+}
+
+.gradient-glass {
+  @apply bg-gradient-to-br from-white/20 via-white/10 to-transparent;
+}
+
+.gradient-accent {
+  @apply bg-gradient-to-r from-pink-400/40 via-purple-400/40 to-blue-400/40;
+}
+
+/* ============================================
+   Shadows and Elevations
+   ============================================ */
+
+.shadow-glass {
+  @apply shadow-xl;
+}
+
+.shadow-glass-sm {
+  @apply shadow-lg;
+}
+
+.shadow-glass-lg {
+  @apply shadow-2xl;
+}
+
+.shadow-glass-xl {
+  @apply shadow-[0_20px_60px_rgba(0,0,0,0.3)];
+}
+
+/* ============================================
+   Text Styles
+   ============================================ */
+
+.text-gradient {
+  @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
+}
+
+.text-glass {
+  @apply text-gray-900 opacity-90;
+}
+
+@media (prefers-color-scheme: dark) {
+  .text-glass {
+    @apply text-gray-100 opacity-90;
+  }
+}
+
+/* ============================================
+   Tables with Glassmorphism
+   ============================================ */
+
+.table-glass {
+  @apply w-full border-collapse;
+}
+
+.table-glass thead {
+  @apply glass;
+}
+
+.table-glass th {
+  @apply px-6 py-3 text-left font-semibold text-gray-900;
+}
+
+.table-glass tbody tr {
+  @apply border-b border-white/20 transition-all duration-300 hover:bg-white/20;
+}
+
+.table-glass td {
+  @apply px-6 py-4 text-gray-700;
+}
+
+@media (prefers-color-scheme: dark) {
+  .table-glass th {
+    @apply text-gray-100;
+  }
+
+  .table-glass td {
+    @apply text-gray-300;
+  }
+
+  .table-glass tbody tr {
+    @apply border-gray-700/20 hover:bg-gray-900/20;
+  }
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+@keyframes glass-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes glass-glow {
+  0%, 100% {
+    box-shadow: 0 0 0 rgba(120, 119, 198, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(120, 119, 198, 0.6);
+  }
+}
+
+@keyframes glass-shimmer {
+  0%, 100% {
+    background-position: 200% 0;
+  }
+  50% {
+    background-position: -200% 0;
+  }
+}
+
+.animate-glass-float {
+  animation: glass-float 3s ease-in-out infinite;
+}
+
+.animate-glass-glow {
+  animation: glass-glow 2s ease-in-out infinite;
+}
+
+.animate-glass-shimmer {
+  animation: glass-shimmer 2s ease-in-out infinite;
+  background-size: 200% 100%;
+}
+
+/* ============================================
+   Utilities
+   ============================================ */
+
+.backdrop-blur-glass {
+  @apply backdrop-blur-md;
+}
+
+.border-glass {
+  @apply border border-white/40;
+}
+
+.border-glass-light {
+  @apply border border-white/20;
+}
+
+.border-glass-strong {
+  @apply border border-white/60;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    @apply p-4 rounded-xl;
+  }
+
+  .card-lg {
+    @apply p-6 rounded-2xl;
+  }
+
+  .btn-glass {
+    @apply px-4 py-2 text-sm;
+  }
+
+  .input-glass {
+    @apply px-3 py-2 text-sm;
+  }
+}
+
+/* ============================================
+   Base Styles
+   ============================================ */
+
+body {
+  @apply bg-gradient-to-br from-gray-50 via-white to-blue-50 min-h-screen transition-colors duration-300;
+  background-attachment: fixed;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    @apply bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 rounded-full;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full hover:bg-gray-400;
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-600 hover:bg-gray-500;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
